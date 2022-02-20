@@ -2,7 +2,7 @@ import React from "react"
 import { CardHeader, Avatar,List, ListItem, ListItemAvatar, ListItemText} from "@mui/material"
 
 const Answers = ({ answers }) => {
-    const listItems = answers.map((answer) => (
+    const listItems = answers?.map((answer) => (
         <ListItem>
             <ListItemAvatar>
                 <Avatar
