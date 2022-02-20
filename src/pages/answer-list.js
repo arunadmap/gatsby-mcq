@@ -18,7 +18,7 @@ const AnswersList = ({ answers }) => {
   }
   return (
     <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {answers.map((value) => {
+      {answers?.map((value) => {
         const labelId = `checkbox-list-secondary-label-${value.key}`;
         return (
           <ListItem
