@@ -1,42 +1,75 @@
-import React from "react"
-import { Chip, Checkbox, Stack, List, ListItem, ListItemAvatar, ListItemText, ListItemButton } from "@mui/material"
+import React, { useState } from "react"
+import {
+  List,
+  Checkbox,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  ListItemIcon,
+  IconButton
+} from "@mui/material"
+//import CheckIcon from '@mui/icons-material/Check'
+//import CloseIcon from '@mui/icons-material/Close'
 
-const AnswersList = ({ answers }) => {
-  const [checked, setChecked] = React.useState([0])
+const AnswersList = ({ answers, userAnswer, setUserAnswerLists }) => {
+
+  const [correctAnswer ] = useState(0)
+  //const [checkedAnswer ] = useState(userAnswer)
+  const [checked, setChecked] = useState(userAnswer)
+
+  function isCorrectAnswer(answer) {
+    if (answer === correctAnswer)
+      return true
+    else
+      return false
+  }
+
+  function isChecked(value) {
+    if (value === userAnswer)
+      return true
+    else
+      return false
+  }
 
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value)
-    const newChecked = [...checked]
-
-    if (currentIndex === -1) {
-      newChecked.push(value)
+    if (checked === value) {
+      setChecked(0);
+      setUserAnswerLists(0)
     } else {
-      newChecked.splice(currentIndex, 1)
+      setChecked(value);
+      setUserAnswerLists(value)
     }
-
-    setChecked(newChecked)
   }
+
   return (
-    <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {answers?.map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value.key}`;
+    <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>
+
+      {answers?.map((answer) => {
+        const labelId = `checkbox-list-secondary-label-${answer.key}`
+
         return (
           <ListItem
-            key={value.key}
+            key={answer.key}
+            selected={isCorrectAnswer(answer.key)}
             secondaryAction={
-              <Checkbox
-                edge="end"
-                onChange={handleToggle(value.key)}
-                checked={checked.indexOf(value.key) !== -1}
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
+              <IconButton edge="end" aria-label="comments">
+                {/* <CheckIcon color="success" />
+                <CloseIcon color="error" /> */}
+              </IconButton>
             }
-            disablePadding>
-            <ListItemButton>
-              <Stack direction="row" spacing={4}>
-                <Chip label={value.index} />
-                <ListItemText id={labelId} primary={value.content} />
-              </Stack>
+            disablePadding
+          >
+            <ListItemButton role={undefined} onClick={handleToggle(answer.key)} dense>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={isChecked(answer.key)}
+                  tabIndex={-1}
+                  inputProps={{ 'aria-labelledby': labelId }}
+                  disableRipple
+                />
+              </ListItemIcon>
+              <ListItemText id={labelId} primary={answer.content} />
             </ListItemButton>
           </ListItem>
         )
